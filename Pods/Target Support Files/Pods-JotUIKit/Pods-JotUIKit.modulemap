@@ -1,0 +1,6 @@
+framework module Pods_JotUIKit {
+  umbrella header "Pods-JotUIKit-umbrella.h"
+
+  export *
+  module * { export * }
+}
