@@ -67,7 +67,7 @@ public class Note {
         let dbRef = db.collection(userID).document(userID).collection("notes")
         
         // Save the document to the user's collection and send the possible error through the completion handler.
-        dbRef.addDocument(data: self.dictionaryForAdd){ err in
+        dbRef.addDocument(data: dictionaryForAdd){ err in
             if let err = err {
                 completion(false, err)
                 return
@@ -90,7 +90,7 @@ public class Note {
         let dbRef = db.collection(userID).document(userID).collection("notes")
         
         // Save the document to the user's collection and send the possible error through the completion handler.
-        dbRef.document(self.ID).updateData(self.dictionaryForUpdate) { err in
+        dbRef.document(ID).updateData(dictionaryForUpdate) { err in
             if let err = err {
                 completion(false, err)
                 return
@@ -111,7 +111,7 @@ public class Note {
         
         let dbRef = db.collection(userID).document(userID).collection("notes")
         
-        dbRef.document(self.ID).delete() { error in
+        dbRef.document(ID).delete() { error in
             // Remove any pending or outstanding notifications and delete.
             
             if let error = error {

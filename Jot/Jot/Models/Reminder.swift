@@ -108,7 +108,7 @@ public class Reminder {
         let dbRef = db.collection(userID).document(userID).collection("reminders")
         
         // Save the document to the user's collection and send the possible error through the completion handler.
-        let messageRef = dbRef.addDocument(data: self.dictionaryForAdd){ err in
+        let messageRef = dbRef.addDocument(data: dictionaryForAdd){ err in
             if let err = err {
                 completion(false, err)
                 return
@@ -116,7 +116,7 @@ public class Reminder {
         }
         
         // Alert Scheduler.
-        if let alert = self.alertTime {
+        if let alert = alertTime {
             UserAlerts.addAlert(title: title, body: note, date: alert, id: messageRef.documentID) { (error) in
                 // Can simply return either nil or an actual error if there is one.
                 completion(true, error)
@@ -124,7 +124,7 @@ public class Reminder {
             }
         }
         
-        if let date = self.dueDate {
+        if let date = dueDate {
             UserAlerts.addBadge(date: date, id: messageRef.documentID) { (error) in
                 // Can simply return either nil or an actual error if there is one.
                 completion(true, error)
@@ -148,10 +148,14 @@ public class Reminder {
         let dbRef = db.collection(userID).document(userID).collection("reminders")
         
         // Save the document to the user's collection and send the possible error through the completion handler.
-        dbRef.document(ID).updateData(dictionaryForUpdate) { err in
+        dbRef.document(ID).updateData(dictionaryForUpdate) {[weak self] err in
+            // Need weak self to prevent memory leaks.
+            guard let self = self else {
+                return completion(false, err)
+            }
+            
             if let err = err {
-                completion(false, err)
-                return
+                return completion(false, err)
             }
             
             // If the reminder is completed, remove all notifications.

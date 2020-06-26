@@ -135,8 +135,10 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
     
     /// Allow the swipe down gesture to push the keyboard away.
     @objc func handleGesture(gesture: UISwipeGestureRecognizer) -> Void {
+        // Log the operating function.
+        os_log(.info, log: self.app, "%@", #function)
+        
         if gesture.direction == .down {
-            print("Swipe Down")
             self.view.endEditing(true)
         }
     }

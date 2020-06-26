@@ -44,7 +44,12 @@ public class Reminders {
         
         let dbRef = db.collection(userID).document(userID).collection("reminders")
         
-        Reminders.handle = dbRef.addSnapshotListener { (querySnapshot, error) in
+        Reminders.handle = dbRef.addSnapshotListener {[weak self] (querySnapshot, error) in
+            // Need weak self to prevent memory leaks.
+            guard let self = self else {
+                return completed()
+            }
+            
             if error != nil {
                 return completed()
             }

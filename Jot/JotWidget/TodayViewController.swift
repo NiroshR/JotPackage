@@ -72,17 +72,20 @@ class TodayViewController: UITableViewController, NCWidgetProviding, RemindersCe
         // If an error is encountered, use NCUpdateResult.Failed
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
-        reminders.loadData { (status, error) in
+        reminders.loadData {[weak self] (status, error) in
+            // Need weak self to prevent memory leaks.
+            guard let self = self else {
+                return completionHandler(NCUpdateResult.failed)
+            }
+            
             if let error = error {
-                completionHandler(NCUpdateResult.failed)
-                print(error.localizedDescription)
-                return
+                os_log(.info, log: self.app, "%@", error.localizedDescription)
+                return completionHandler(NCUpdateResult.failed)
             }
             
             if status == false {
-                completionHandler(NCUpdateResult.failed)
-                print("couldn't load")
-                return
+                os_log(.info, log: self.app, "Couldn't load reminders")
+                return completionHandler(NCUpdateResult.failed)
             }
             
             self.tableView.reloadData()

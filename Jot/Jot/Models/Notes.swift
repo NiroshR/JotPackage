@@ -43,7 +43,12 @@ public class Notes {
         
         let dbRef = db.collection(userID).document(userID).collection("notes").order(by: "lastUpdated", descending: true)
         
-        Notes.handle = dbRef.addSnapshotListener { (querySnapshot, error) in
+        Notes.handle = dbRef.addSnapshotListener {[weak self] (querySnapshot, error) in
+            // Need weak self to prevent memory leaks.
+            guard let self = self else {
+                return completed()
+            }
+            
             if error != nil {
                 return completed()
             }
