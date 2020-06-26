@@ -1,0 +1,54 @@
+//
+//  Debug.xcconfig
+//  Jot
+//
+//  Created by Nirosh Ratnarajah on 2020-05-20.
+//  Copyright © 2020 Nirosh Ratnarajah. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// MARK: -App
+
+// App Settings
+APP_NAME = Jot
+APP_BUNDLE_ID = dev.ratnarajah.Jot.debug
+
+// Bundle Version String
+// [Major].[Minor].[Patch]
+BUNDLE_STRING = 0.0.0
+
+// Bundle Version (Build number)
+BUNDLE_BUILD = 1
+
+// Variables to be overridden by Keys config file.
+FIREBASE_CLIENT_ID = ""
+FIREBASE_API_KEY = ""
+FIREBASE_GCM_SENDER_ID = ""
+FIREBASE_PROJECT_ID = ""
+FIREBASE_GOOGLE_APP_ID = ""
+FIREBASE_DATABASE_URL = ""
+#include? "DebugKeys.xcconfig"
+
+// MARK: -Widget
+
+// App Settings
+APP_WIDGET_NAME = Jot Widget
+APP_WIDGET_BUNDLE_ID = dev.ratnarajah.Jot.debug.JotWidget
+
+// Bundle Version String
+// [Major].[Minor].[Patch]
+BUNDLE_WIDGET_STRING = 0.0.0
+
+// Bundle Version (Build number)
+BUNDLE_WIDGET_BUILD = 1
+
+// Variables to be overridden by Keys config file.
+FIREBASE_WIDGET_CLIENT_ID = ""
+FIREBASE_WIDGET_API_KEY = ""
+FIREBASE_WIDGET_GCM_SENDER_ID = ""
+FIREBASE_WIDGET_PROJECT_ID = ""
+FIREBASE_WIDGET_GOOGLE_APP_ID = ""
+FIREBASE_WIDGET_DATABASE_URL = ""
+#include? "DebugKeys.xcconfig"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:JotUIKit/JotUIKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:JotModelKit/JotModelKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Jot/Jot.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
