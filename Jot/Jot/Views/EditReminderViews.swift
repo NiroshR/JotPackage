@@ -10,13 +10,13 @@ import UIKit
 import JotModelKit
 
 extension EditReminderVC {
-        
+    
     func setupViews() {
         // Set background colour.
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
         
         view.addSubview(scrollView)
-        self.scrollView.scrollRectToVisible(self.reminderNoteTextView.frame, animated: true)
+        scrollView.scrollRectToVisible(reminderNoteTextView.frame, animated: true)
         scrollView.addSubview(contentView)
         contentView.addSubview(stackView)
         
@@ -95,7 +95,7 @@ extension EditReminderVC {
     func setupNavBar() {
         // Set clear navigation bar.
         navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.setBarColor(UIColor.clear)
+        navigationController?.navigationBar.setBarColor(UIColor.clear)
         
     }
     

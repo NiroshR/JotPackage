@@ -10,7 +10,7 @@ import SnapKit
 import UIKit
 
 extension UpdatePasswordVC {
-        
+    
     /// Adds subviews and arranged UI components of view for reauthenticate view.
     func setupReauthenticateView() {
         

@@ -51,12 +51,9 @@ extension RemindersVC {
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
         
         view.addSubview(button)
-        button.snp.makeConstraints {[weak self] (make) in
-            guard let self = self else {
-                return
-            }
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-15)
-            make.left.equalTo(self.view.safeAreaLayoutGuide.snp.left).offset(15)
+        button.snp.makeConstraints {(make) in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-15)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(15)
             make.height.greaterThanOrEqualTo(40)
             make.width.greaterThanOrEqualTo(button.snp.height)
         }
