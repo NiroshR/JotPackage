@@ -17,13 +17,13 @@ class NotesVC: UITableViewController {
     
     let app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
     
-    let button = BlueButton(type: .custom)
+    lazy var button = BlueButton(type: .custom)
     
     var notes: Notes!
     
-    let searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController = UISearchController(searchResultsController: nil)
     
-    var filteredNotes: [Note] = []
+    lazy var filteredNotes: [Note] = []
     
     // MARK: -Class Override Functions
     
@@ -36,6 +36,13 @@ class NotesVC: UITableViewController {
         notes = Notes()
         
         setupView()
+        
+        setupNavBar()
+        // Load the data from Firebase and this also contains the listeners
+        // for notes to auto-update the table when a note is edited.
+        notes.loadData {
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,14 +51,6 @@ class NotesVC: UITableViewController {
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
-        
-        setupNavBar()
-        
-        // Load the data from Firebase and this also contains the listeners
-        // for notes to auto-update the table when a note is edited.
-        notes.loadData {
-            self.tableView.reloadData()
-        }
     }
     
     // MARK: -Tableview Sections
@@ -191,7 +190,7 @@ class NotesVC: UITableViewController {
     
     /// Computed property to determine if you are currently filtering results or not.
     var isFiltering: Bool {
-      return searchController.isActive && !isSearchBarEmpty
+        return searchController.isActive && !isSearchBarEmpty
     }
     
     // MARK: -Action Functions

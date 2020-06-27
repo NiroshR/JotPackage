@@ -67,6 +67,18 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         
         // Save the note on exit.
         saveOnExit()
+        removeObservers()
+        
+        note = nil
+        markdownTextView = nil
+    }
+    
+    func removeObservers() {
+        for recognizer in view.gestureRecognizers ?? [] {
+            view.removeGestureRecognizer(recognizer)
+        }
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     /// Remove move view up when keyboard appears logic.

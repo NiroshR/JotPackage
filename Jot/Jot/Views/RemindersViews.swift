@@ -16,7 +16,7 @@ extension RemindersVC {
     func setupView() {
         // Setup the navigation bar item for settings.
         let button = UIBarButtonItem(image: UIImage(systemName: "gear"),
-                                     style: .plain, target: self, action: #selector(self.settingsButtonPressed))
+                                     style: .plain, target: self, action: #selector(settingsButtonPressed))
         navigationItem.rightBarButtonItem = button
         
         // Add our search bar at the top of the view. Non-persistent behaviour.
@@ -30,10 +30,10 @@ extension RemindersVC {
         definesPresentationContext = true
         
         // Group the table view by section. This gets rid of blank horizontal lines where a cell would be.
-        self.tableView = UITableView(frame: self.tableView.frame, style: .insetGrouped)
+        tableView = UITableView(frame: tableView.frame, style: .insetGrouped)
         
         //Registers a class for use in creating new table cells.
-        self.tableView.register(RemindersTableCell.self, forCellReuseIdentifier: "checkMarkCellID")
+        tableView.register(RemindersTableCell.self, forCellReuseIdentifier: "checkMarkCellID")
         
         // Load the add reminder float button.
         loadFloatButton()
@@ -50,27 +50,30 @@ extension RemindersVC {
         button.clipsToBounds = true
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
         
-        self.view.addSubview(button)
-        button.snp.makeConstraints { (make) in
+        view.addSubview(button)
+        button.snp.makeConstraints {[weak self] (make) in
+            guard let self = self else {
+                return
+            }
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-15)
             make.left.equalTo(self.view.safeAreaLayoutGuide.snp.left).offset(15)
             make.height.greaterThanOrEqualTo(40)
             make.width.greaterThanOrEqualTo(button.snp.height)
         }
         
-        button.addTarget(self, action: #selector(self.addReminderButtonClicked),
+        button.addTarget(self, action: #selector(addReminderButtonClicked),
                          for: .touchUpInside)
     }
     
     /// Setup navigation bar for the view.
     func setupNavBar() {
         // Set navigation bar title.
-        self.title = "Reminders"
+        title = "Reminders"
         
         // Set clear navigation bar.
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.setBarColor(UIColor.systemBackground.withAlphaComponent(0.9))
+        navigationController?.navigationBar.setBarColor(UIColor.systemBackground.withAlphaComponent(0.9))
     }
     
     /// Set the color of text based on due date or alert in future or past.

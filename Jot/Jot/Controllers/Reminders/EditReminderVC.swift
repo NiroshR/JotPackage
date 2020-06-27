@@ -19,17 +19,17 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     
     var reminder: Reminder!
     
-    var reminderTitleTextView = createPlaceholderTextView(placeholder: "Title", font: .title2)
+    lazy var reminderTitleTextView = createPlaceholderTextView(placeholder: "Title", font: .title2)
     
-    var reminderNoteTextView = createPlaceholderTextView(placeholder: "Notes", font: .body, bottomInset: 40)
+    lazy var reminderNoteTextView = createPlaceholderTextView(placeholder: "Notes", font: .body, bottomInset: 40)
     
-    var reminderDueDateTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Add Due Date", systemImage: "calendar")
+    lazy var reminderDueDateTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Add Due Date", systemImage: "calendar")
     
-    var reminderAlertReminderTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Alert Me", systemImage: "bell")
+    lazy var reminderAlertReminderTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Alert Me", systemImage: "bell")
     
-    var priorityTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Priority", systemImage: "pin")
+    lazy var priorityTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Priority", systemImage: "pin")
     
-    var flaggedTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Flagged", systemImage: "flag")
+    lazy var flaggedTextField: UITextField = createTextFieldWithLeftImage(placeholder: "Flagged", systemImage: "flag")
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -55,7 +55,7 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         super.viewDidLoad()
         
@@ -80,7 +80,7 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewWillAppear(animated)
         
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
@@ -103,6 +103,11 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         
         // Save the reminder to Firebase.
         saveOnExit()
+        reminder = nil
+    }
+    
+    deinit {
+        os_log(.info, log: app, "%@", #function)
     }
     
     // MARK: -Keyboard Functionality
@@ -118,7 +123,12 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     /// Step 3: Add observers for 'UIKeyboardWillShow' and 'UIKeyboardWillHide' notification.
     func addObservers() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) {
-            notification in
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
             self.keyboardWillShow(notification: notification)
         }
     }
@@ -126,6 +136,10 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     /// Move TextFields to keyboard.
     /// Step 6: Method to remove observers.
     func removeObservers() {
+        for recognizer in view.gestureRecognizers ?? [] {
+            view.removeGestureRecognizer(recognizer)
+        }
+        
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -310,9 +324,9 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         if let dueDate = reminder.dueDate {
             
             if dueDate.startOfDay < Date().startOfDay {
-                self.reminderDueDateTextField.textColor = .systemRed
+                reminderDueDateTextField.textColor = .systemRed
             } else {
-                self.reminderDueDateTextField.textColor = .label
+                reminderDueDateTextField.textColor = .label
             }
             
             reminderDueDateTextField.text = "Due "  + DateModel.formatDueDateRelativeAndCustom(dueDate)
@@ -322,9 +336,9 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         if let alertTime = reminder.alertTime {
             
             if alertTime < Date() {
-                self.reminderAlertReminderTextField.textColor = .systemRed
+                reminderAlertReminderTextField.textColor = .systemRed
             } else {
-                self.reminderAlertReminderTextField.textColor = .label
+                reminderAlertReminderTextField.textColor = .label
             }
             
             reminderAlertReminderTextField.text = DateModel.formatAlertTime(alertTime)
@@ -333,103 +347,109 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     
     /// Save the reminder to Firebase on exit.
     func saveOnExit() {
-        // Ensure the title string of reminder is valid.
-        guard let titleString = reminderTitleTextView.text else {
-            self.logAndDisplayAlert(app: self.app, log: "Error grabbing reminder's title string", displayAlert: "Can't save reminder. Try again later")
-            return
-        }
-        reminder.title = titleString
         
-        // Ensure the note string of reminder is valid.
-        guard let noteString = reminderNoteTextView.text else {
-            self.logAndDisplayAlert(app: self.app, log: "Error grabbing reminder's note string", displayAlert: "Can't save reminder. Try again later")
-            return
-        }
-        reminder.note = noteString
-        
-        // Ensure the due date string is valid.
-        guard let dueDateString = reminderDueDateTextField.text else {
-            self.logAndDisplayAlert(app: self.app, log: "Error grabbing due date string", displayAlert: "Can't save reminder. Try again later")
-            return
-        }
-        
-        // Ensure the alert string is valid.
-        guard let alertTimeString = reminderAlertReminderTextField.text else {
-            self.logAndDisplayAlert(app: self.app, log: "Error grabbing alert time string", displayAlert: "Can't save reminder. Try again later")
-            return
-        }
-        
-        // If we have a date stored, but the due date string is empty
-        // we need to delete the date because it isn't valid.
-        if dueDateString.isEmpty {
-            reminder.dueDate = nil
-            os_log(.info, log: self.app, "Date was set, but text field has been emptied. Deleting due date.")
-        }
-        
-        // If there is an alert time stored, but the alert string is empty
-        // we need to delete the alert time because it isn't valid.
-        if alertTimeString.isEmpty {
-            reminder.alertTime = nil
-            os_log(.info, log: self.app, "Alert time was set, but text field has been emptied. Deleting due alert.")
-        }
-        
-        // If the reminder is new, we create a reminder. If not, we update/delete it as appropriate.
-        if reminder.ID.isEmpty {
-            // If there is no title, then we don't save the reminder.
-            if titleString.isEmpty {
-                os_log(.info, log: self.app, "No text in reminder, no need to save")
+        _ = { [weak self] in
+            guard let strongself = self else { return }
+            //...
+            // Ensure the title string of reminder is valid.
+            guard let titleString = strongself.reminderTitleTextView.text else {
+                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing reminder's title string", displayAlert: "Can't save reminder. Try again later")
+                return
+            }
+            strongself.reminder.title = titleString
+            
+            // Ensure the note string of reminder is valid.
+            guard let noteString = strongself.reminderNoteTextView.text else {
+                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing reminder's note string", displayAlert: "Can't save reminder. Try again later")
+                return
+            }
+            strongself.reminder.note = noteString
+            
+            // Ensure the due date string is valid.
+            guard let dueDateString = strongself.reminderDueDateTextField.text else {
+                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing due date string", displayAlert: "Can't save reminder. Try again later")
                 return
             }
             
-            reminder.addData { (success, error) in
-                if let error = error {
-                    self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
-                    return
-                }
-                
-                if !success {
-                    self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
-                    return
-                }
-                
-                os_log(.info, log: self.app, "Document added successfully")
+            // Ensure the alert string is valid.
+            guard let alertTimeString = strongself.reminderAlertReminderTextField.text else {
+                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing alert time string", displayAlert: "Can't save reminder. Try again later")
+                return
             }
             
-        } else {
+            // If we have a date stored, but the due date string is empty
+            // we need to delete the date because it isn't valid.
+            if dueDateString.isEmpty {
+                strongself.reminder.dueDate = nil
+                os_log(.info, log: strongself.app, "Date was set, but text field has been emptied. Deleting due date.")
+            }
             
-            // If there is no title and note, then we delete the reminder.
-            if titleString.isEmpty && noteString.isEmpty {
-                reminder.deleteReminder { (success, error) in
+            // If there is an alert time stored, but the alert string is empty
+            // we need to delete the alert time because it isn't valid.
+            if alertTimeString.isEmpty {
+                strongself.reminder.alertTime = nil
+                os_log(.info, log: strongself.app, "Alert time was set, but text field has been emptied. Deleting due alert.")
+            }
+            
+            // If the reminder is new, we create a reminder. If not, we update/delete it as appropriate.
+            if strongself.reminder.ID.isEmpty {
+                // If there is no title, then we don't save the reminder.
+                if titleString.isEmpty {
+                    os_log(.info, log: strongself.app, "No text in reminder, no need to save")
+                    return
+                }
+                
+                strongself.reminder.addData { (success, error) in
                     if let error = error {
-                        self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                        strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
                         return
                     }
                     
                     if !success {
-                        self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
+                        strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
                         return
                     }
                     
+                    os_log(.info, log: strongself.app, "Document added successfully")
                 }
-                os_log(.info, log: self.app, "Document deleted for note having any text successfully")
-                return
-            }
-            
-            // Update the reminder.
-            reminder.updateData { (success, error) in
-                if let error = error {
-                    self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                
+            } else {
+                
+                // If there is no title and note, then we delete the reminder.
+                if titleString.isEmpty && noteString.isEmpty {
+                    strongself.reminder.deleteReminder { (success, error) in
+                        if let error = error {
+                            strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                            return
+                        }
+                        
+                        if !success {
+                            strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
+                            return
+                        }
+                        
+                    }
+                    os_log(.info, log: strongself.app, "Document deleted for note having any text successfully")
                     return
                 }
                 
-                if !success {
-                    self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
-                    return
+                // Update the reminder.
+                strongself.reminder.updateData { (success, error) in
+                    if let error = error {
+                        strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                        return
+                    }
+                    
+                    if !success {
+                        strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
+                        return
+                    }
+                    
+                    os_log(.info, log: strongself.app, "Document updated successfully")
                 }
-                
-                os_log(.info, log: self.app, "Document updated successfully")
             }
         }
+        
     }
     
 }

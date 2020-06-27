@@ -17,32 +17,35 @@ class BackgroundImageVC: UICollectionViewController, UICollectionViewDelegateFlo
     
     let app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
     
-    private let reuseIdentifier = "FlickrCell"
+    lazy var reuseIdentifier = "FlickrCell"
     
-    private let images: [String] = ["Background1", "Background2", "Background3"]
+    // Load in images from file content so they don't get stored in cache.
+    var images: [UIImage?] = [UIImage(contentsOfFile: Bundle.main.path(forResource: "Background1", ofType: "png") ?? ""),
+                              UIImage(contentsOfFile: Bundle.main.path(forResource: "Background2", ofType: "png") ?? ""),
+                              UIImage(contentsOfFile: Bundle.main.path(forResource: "Background3", ofType: "png") ?? "")]
     
-    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    lazy var imagesStrings: [String] = ["Background1", "Background2", "Background3"]
     
-    private let itemsPerRow: CGFloat = 3
+    lazy var sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    
+    lazy var itemsPerRow: CGFloat = 3
     
     // MARK: -Class Override Functions
     
     override func viewDidLoad() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         super.viewDidLoad()
         
-        self.collectionView!.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        self.collectionView.backgroundColor = .systemBackground
-        
-        self.title = "Pick Background Image"
+        collectionView!.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.backgroundColor = .systemBackground
+        title = "Pick Background Image"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         super.viewWillAppear(animated)
         
@@ -60,12 +63,16 @@ class BackgroundImageVC: UICollectionViewController, UICollectionViewDelegateFlo
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        os_log(.info, log: app, "%@", #function)
+    }
+    
     // MARK: -Collection View Setup
     
     /// Logic for when a collection cell is touched.
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         // Need to deselect the cell after the tap has ended.
         let generator = UIImpactFeedbackGenerator(style: .soft)
@@ -74,8 +81,8 @@ class BackgroundImageVC: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView.deselectItem(at: indexPath, animated: true)
         
         // Set the image as the background image for the app.
-        backgroundImageSet(image: images[indexPath.section + indexPath.row])
-        self.navigationController?.popViewController(animated: true)
+        backgroundImageSet(image: imagesStrings[indexPath.section + indexPath.row])
+        navigationController?.popViewController(animated: true)
     }
     
     /// Number of items to be displayed.
@@ -88,7 +95,7 @@ class BackgroundImageVC: UICollectionViewController, UICollectionViewDelegateFlo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! ImageCollectionViewCell
         
-        let image = UIImage(named: images[indexPath.section + indexPath.row])
+        let image = images[indexPath.section + indexPath.row]
         
         // Recalculate the width iteams.
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)

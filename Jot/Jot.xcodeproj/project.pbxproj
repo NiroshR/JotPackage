@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		10F5ED243BC954F6E4C3507B /* Pods_Jot_JotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF49F72152B00EA79D359665 /* Pods_Jot_JotUITests.framework */; };
+		240C11F724A6B5E300298A41 /* Background1.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11F624A6B5E300298A41 /* Background1.png */; };
+		240C11F924A6B62800298A41 /* Background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11F824A6B62800298A41 /* Background2.png */; };
+		240C11FB24A6B63000298A41 /* Background3.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11FA24A6B63000298A41 /* Background3.png */; };
 		242A323424A2E6D300DA7F34 /* JotUIKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 242A323024A2E6A400DA7F34 /* JotUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		242A323524A2E6E000DA7F34 /* JotModelKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 242A322724A2E69100DA7F34 /* JotModelKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		242A323D24A2E91F00DA7F34 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A323C24A2E91F00DA7F34 /* TabBarVC.swift */; };
@@ -142,6 +145,9 @@
 /* Begin PBXFileReference section */
 		046CEF9FAB74DB4ED8D85388 /* Pods-JotWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JotWidget.debug.xcconfig"; path = "Target Support Files/Pods-JotWidget/Pods-JotWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		239C7F74F8981878B43A8CA5 /* Pods_JotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		240C11F624A6B5E300298A41 /* Background1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background1.png; path = ../../../../Jot/Jot/Assets.xcassets/Background1.imageset/Background1.png; sourceTree = "<group>"; };
+		240C11F824A6B62800298A41 /* Background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background2.png; path = ../../../../Jot/Jot/Assets.xcassets/Background2.imageset/Background2.png; sourceTree = "<group>"; };
+		240C11FA24A6B63000298A41 /* Background3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background3.png; path = ../../../../Jot/Jot/Assets.xcassets/Background3.imageset/Background3.png; sourceTree = "<group>"; };
 		242A322124A2E69100DA7F34 /* JotModelKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JotModelKit.xcodeproj; path = ../JotModelKit/JotModelKit.xcodeproj; sourceTree = "<group>"; };
 		242A322A24A2E6A400DA7F34 /* JotUIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JotUIKit.xcodeproj; path = ../JotUIKit/JotUIKit.xcodeproj; sourceTree = "<group>"; };
 		242A323C24A2E91F00DA7F34 /* TabBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
@@ -265,6 +271,16 @@
 				E4B40058990857827230EB6B /* Pods_JotWidget.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		240C11F124A6B57D00298A41 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				240C11F624A6B5E300298A41 /* Background1.png */,
+				240C11F824A6B62800298A41 /* Background2.png */,
+				240C11FA24A6B63000298A41 /* Background3.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		242A322024A2E66400DA7F34 /* Dependencies */ = {
@@ -419,6 +435,7 @@
 		24A7457924A256C5002BAC8F /* Jot */ = {
 			isa = PBXGroup;
 			children = (
+				240C11F124A6B57D00298A41 /* Images */,
 				2459222524A3BFEB006AB4E0 /* Jot.entitlements */,
 				2473C9E024A3995900F7E2B4 /* Models */,
 				242A325024A2EB2100DA7F34 /* Views */,
@@ -677,11 +694,14 @@
 				24753A3924A2B32000E901F5 /* DebugKeys.xcconfig in Resources */,
 				242E913E24A2B6C70037B723 /* GoogleService-Info.plist in Resources */,
 				24A7458724A256C7002BAC8F /* LaunchScreen.storyboard in Resources */,
+				240C11F924A6B62800298A41 /* Background2.png in Resources */,
 				24A7458424A256C7002BAC8F /* Preview Assets.xcassets in Resources */,
 				24753A3A24A2B32000E901F5 /* Debug.xcconfig in Resources */,
 				24753A3B24A2B32000E901F5 /* FirestoreRules in Resources */,
 				24753A3C24A2B32000E901F5 /* Release.xcconfig in Resources */,
+				240C11FB24A6B63000298A41 /* Background3.png in Resources */,
 				24A7458124A256C7002BAC8F /* Assets.xcassets in Resources */,
+				240C11F724A6B5E300298A41 /* Background1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
