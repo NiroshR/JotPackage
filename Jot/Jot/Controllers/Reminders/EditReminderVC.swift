@@ -15,7 +15,7 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: -Class Variables
     
-    let app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
+    lazy var app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
     
     var reminder: Reminder!
     
@@ -65,7 +65,7 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         }
         
         // Allows a tap outside textfields to hide the keyboard.
-        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
         
         // Move TextFields to keyboard. Step 1: Add tap gesture to view.
@@ -97,17 +97,32 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        Swift.print(#function, "CFGetRetainCount ", CFGetRetainCount(reminderTitleTextView))
         // Move TextFields to keyboard.
         // Step 8: Remove observers to NOT receive notification when viewcontroller is in the background.
         removeObservers()
+        Swift.print(#function, "CFGetRetainCount ", CFGetRetainCount(reminderTitleTextView))
         
         // Save the reminder to Firebase.
         saveOnExit()
-        reminder = nil
     }
     
     deinit {
         os_log(.info, log: app, "%@", #function)
+        
+        reminder = nil
+        reminderTitleTextView.textStorage.removeLayoutManager(reminderTitleTextView.layoutManager)
+        reminderNoteTextView.textStorage.removeLayoutManager(reminderNoteTextView.layoutManager)
+        
+        reminderDueDateTextField.delegate = nil
+        reminderAlertReminderTextField.delegate = nil
+        priorityTextField.delegate = nil
+        flaggedTextField.delegate = nil
+        
+        
+        Swift.print(#function, "CFGetRetainCount ", CFGetRetainCount(reminderTitleTextView))
+        Swift.print(#function, "CFGetRetainCount ", CFGetRetainCount(reminderDueDateTextField))
     }
     
     // MARK: -Keyboard Functionality
@@ -130,6 +145,16 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
             }
             
             self.keyboardWillShow(notification: notification)
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) {
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
+            self.keyboardWillHide(notification: notification)
         }
     }
     
@@ -179,7 +204,10 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
             make.top.equalTo(alert.view).offset(8)
         }
         
-        let ok = UIAlertAction(title: "Done", style: .default) { (action) in
+        let ok = UIAlertAction(title: "Done", style: .default) {[weak self] (action) in
+            guard let self = self else {
+                return
+            }
             
             let datePicked = datePicker.date
             
@@ -200,6 +228,13 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         
         alert.addAction(ok)
         alert.addAction(cancel)
+        
+        // Prevent iPad crash for using popover.
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = view //to set the source of your alert
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: view.bounds.midY, width: 0, height: 0) // you can set this as per your requirement.
+            popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+        }
         
         present(alert, animated: true, completion: nil)
     }
@@ -243,6 +278,13 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         alert.addAction(ok)
         alert.addAction(cancel)
         
+        // Prevent iPad crash for using popover.
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view //to set the source of your alert
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0) // you can set this as per your requirement.
+            popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+        }
+        
         present(alert, animated: true, completion: nil)
     }
     
@@ -282,6 +324,13 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         optionMenu.addAction(highPriority)
         optionMenu.addAction(cancel)
         
+        // Prevent iPad crash for using popover.
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = self.view //to set the source of your alert
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0) // you can set this as per your requirement.
+            popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+        }
+        
         // 5
         self.present(optionMenu, animated: true, completion: nil)
     }
@@ -308,6 +357,13 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
         optionMenu.addAction(noFlag)
         optionMenu.addAction(setFlag)
         optionMenu.addAction(cancel)
+        
+        // Prevent iPad crash for using popover.
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = self.view //to set the source of your alert
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0) // you can set this as per your requirement.
+            popoverController.permittedArrowDirections = [] //to hide the arrow of any particular direction
+        }
         
         // 5
         self.present(optionMenu, animated: true, completion: nil)
@@ -348,108 +404,107 @@ class EditReminderVC: UIViewController, UIGestureRecognizerDelegate {
     /// Save the reminder to Firebase on exit.
     func saveOnExit() {
         
-        _ = { [weak self] in
-            guard let strongself = self else { return }
-            //...
-            // Ensure the title string of reminder is valid.
-            guard let titleString = strongself.reminderTitleTextView.text else {
-                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing reminder's title string", displayAlert: "Can't save reminder. Try again later")
-                return
-            }
-            strongself.reminder.title = titleString
-            
-            // Ensure the note string of reminder is valid.
-            guard let noteString = strongself.reminderNoteTextView.text else {
-                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing reminder's note string", displayAlert: "Can't save reminder. Try again later")
-                return
-            }
-            strongself.reminder.note = noteString
-            
-            // Ensure the due date string is valid.
-            guard let dueDateString = strongself.reminderDueDateTextField.text else {
-                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing due date string", displayAlert: "Can't save reminder. Try again later")
-                return
-            }
-            
-            // Ensure the alert string is valid.
-            guard let alertTimeString = strongself.reminderAlertReminderTextField.text else {
-                strongself.logAndDisplayAlert(app: strongself.app, log: "Error grabbing alert time string", displayAlert: "Can't save reminder. Try again later")
-                return
-            }
-            
-            // If we have a date stored, but the due date string is empty
-            // we need to delete the date because it isn't valid.
-            if dueDateString.isEmpty {
-                strongself.reminder.dueDate = nil
-                os_log(.info, log: strongself.app, "Date was set, but text field has been emptied. Deleting due date.")
-            }
-            
-            // If there is an alert time stored, but the alert string is empty
-            // we need to delete the alert time because it isn't valid.
-            if alertTimeString.isEmpty {
-                strongself.reminder.alertTime = nil
-                os_log(.info, log: strongself.app, "Alert time was set, but text field has been emptied. Deleting due alert.")
-            }
-            
-            // If the reminder is new, we create a reminder. If not, we update/delete it as appropriate.
-            if strongself.reminder.ID.isEmpty {
-                // If there is no title, then we don't save the reminder.
-                if titleString.isEmpty {
-                    os_log(.info, log: strongself.app, "No text in reminder, no need to save")
-                    return
-                }
-                
-                strongself.reminder.addData { (success, error) in
-                    if let error = error {
-                        strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
-                        return
-                    }
-                    
-                    if !success {
-                        strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
-                        return
-                    }
-                    
-                    os_log(.info, log: strongself.app, "Document added successfully")
-                }
-                
-            } else {
-                
-                // If there is no title and note, then we delete the reminder.
-                if titleString.isEmpty && noteString.isEmpty {
-                    strongself.reminder.deleteReminder { (success, error) in
-                        if let error = error {
-                            strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
-                            return
-                        }
-                        
-                        if !success {
-                            strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
-                            return
-                        }
-                        
-                    }
-                    os_log(.info, log: strongself.app, "Document deleted for note having any text successfully")
-                    return
-                }
-                
-                // Update the reminder.
-                strongself.reminder.updateData { (success, error) in
-                    if let error = error {
-                        strongself.logAndDisplayAlert(app: strongself.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
-                        return
-                    }
-                    
-                    if !success {
-                        strongself.logAndDisplayAlert(app: strongself.app, log: "Error while saving data", displayAlert: "Try again later")
-                        return
-                    }
-                    
-                    os_log(.info, log: strongself.app, "Document updated successfully")
-                }
-            }
+        // Ensure the title string of reminder is valid.
+        guard let titleString = reminderTitleTextView.text else {
+            logAndDisplayAlert(app: app, log: "Error grabbing reminder's title string", displayAlert: "Can't save reminder. Try again later")
+            return
+        }
+        reminder.title = titleString
+        
+        // Ensure the note string of reminder is valid.
+        guard let noteString = reminderNoteTextView.text else {
+            logAndDisplayAlert(app: self.app, log: "Error grabbing reminder's note string", displayAlert: "Can't save reminder. Try again later")
+            return
+        }
+        reminder.note = noteString
+        
+        // Ensure the due date string is valid.
+        guard let dueDateString = reminderDueDateTextField.text else {
+            logAndDisplayAlert(app: self.app, log: "Error grabbing due date string", displayAlert: "Can't save reminder. Try again later")
+            return
         }
         
+        // Ensure the alert string is valid.
+        guard let alertTimeString = reminderAlertReminderTextField.text else {
+            logAndDisplayAlert(app: app, log: "Error grabbing alert time string", displayAlert: "Can't save reminder. Try again later")
+            return
+        }
+        
+        // If we have a date stored, but the due date string is empty
+        // we need to delete the date because it isn't valid.
+        if dueDateString.isEmpty {
+            reminder.dueDate = nil
+            os_log(.info, log: app, "Date was set, but text field has been emptied. Deleting due date.")
+        }
+        
+        // If there is an alert time stored, but the alert string is empty
+        // we need to delete the alert time because it isn't valid.
+        if alertTimeString.isEmpty {
+            reminder.alertTime = nil
+            os_log(.info, log: self.app, "Alert time was set, but text field has been emptied. Deleting due alert.")
+        }
+        
+        // If the reminder is new, we create a reminder. If not, we update/delete it as appropriate.
+        if reminder.ID.isEmpty {
+            // If there is no title, then we don't save the reminder.
+            if titleString.isEmpty {
+                os_log(.info, log: app, "No text in reminder, no need to save")
+                return
+            }
+            
+            reminder.addData { (success, error) in
+                if let error = error {
+                    self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                    return
+                }
+                
+                if !success {
+                    self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
+                    return
+                }
+                
+                os_log(.info, log: self.app, "Document added successfully")
+            }
+            
+        } else {
+            
+            // If there is no title and note, then we delete the reminder.
+            if titleString.isEmpty && noteString.isEmpty {
+                reminder.deleteReminder { (success, error) in
+                    if let error = error {
+                        self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                        return
+                    }
+                    
+                    if !success {
+                        self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
+                        return
+                    }
+                    
+                }
+                os_log(.info, log: app, "Document deleted for note having any text successfully")
+                return
+            }
+            
+            // Update the reminder.
+            reminder.updateData {[weak self] (success, error) in
+                guard let self = self else {
+                    return
+                }
+                
+                if let error = error {
+                    self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
+                    return
+                }
+                
+                if !success {
+                    self.logAndDisplayAlert(app: self.app, log: "Error while saving data", displayAlert: "Try again later")
+                    return
+                }
+                
+                os_log(.info, log: self.app, "Document updated successfully")
+            }
+        }
     }
     
 }

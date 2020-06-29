@@ -32,7 +32,7 @@ public struct MarklightRegex {
             assert(re != nil)
         }
         
-        self.regularExpression = re
+        regularExpression = re
     }
     
     public func matches(_ input: String, range: NSRange,

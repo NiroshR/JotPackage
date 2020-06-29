@@ -115,7 +115,7 @@ open class MarklightTextProcessor {
     fileprivate func resetMarklightAttributes(styleApplier: MarklightStyleApplier, range: NSRange) {
 
         styleApplier.resetMarklightTextAttributes(
-            textSize: self.textSize,
+            textSize: textSize,
             range: range)
     }
 
@@ -133,7 +133,7 @@ open class MarklightTextProcessor {
     /// Text size measured in points.
     fileprivate var textSize: CGFloat {
         return MarklightFontDescriptor
-            .preferredFontDescriptor(withTextStyle: UIFont.TextStyle(rawValue: self.fontTextStyleValidated))
+            .preferredFontDescriptor(withTextStyle: UIFont.TextStyle(rawValue: fontTextStyleValidated))
             .pointSize
     }
 
@@ -162,11 +162,11 @@ open class MarklightTextProcessor {
                 ])
         }()
         
-        guard supportedTextStyles.contains(self.fontTextStyle) else {
+        guard supportedTextStyles.contains(fontTextStyle) else {
             return UIFont.TextStyle.body.rawValue
         }
         
-        return self.fontTextStyle
+        return fontTextStyle
     }
 
     #elseif os(macOS)

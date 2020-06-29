@@ -25,7 +25,7 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         super.viewDidLoad()
         
@@ -35,20 +35,19 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         }
         
         // Add notification so we know when the keyboard is showing or not.
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        addObservers()
         
         // Add the swipe gesture to dismiss the keyboard.
         let swipeDownToDismissKeyboard = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
         swipeDownToDismissKeyboard.direction = .down
-        self.view.addGestureRecognizer(swipeDownToDismissKeyboard)
+        view.addGestureRecognizer(swipeDownToDismissKeyboard)
         
         setupView()        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
@@ -63,14 +62,33 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         // Save the note on exit.
         saveOnExit()
         removeObservers()
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) {
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
+            self.keyboardWillShow(notification: notification)
+        }
         
-        note = nil
-        markdownTextView = nil
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) {
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
+            self.keyboardWillHide(notification: notification)
+        }
     }
     
     func removeObservers() {
@@ -83,15 +101,25 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
     
     /// Remove move view up when keyboard appears logic.
     deinit {
-        os_log(.info, log: self.app, "Keyboard observers deinitialized")
+        // Log the operating function.
+        os_log(.info, log: app, "%@", #function)
         NotificationCenter.default.removeObserver(self)
+        
+        note = nil
+        markdownTextView.textStorage.endEditing()
+        for manager in markdownTextView.textStorage.layoutManagers {
+            markdownTextView.textStorage.removeLayoutManager(manager)
+        }
+        
+        markdownTextView = nil
+        
     }
     
     // MARK: -Action Functions
     
     /// Move keyboard up when needed.
-    @objc func keyboardWillShow(notification: NSNotification) {
-        os_log(.info, log: self.app, "View moved to accomodate keyboard")
+    @objc func keyboardWillShow(notification: Notification) {
+        os_log(.info, log: app, "View moved to accomodate keyboard")
         
         guard let userInfo = notification.userInfo else {return}
         guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
@@ -100,13 +128,13 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         shiftSize = markdownTextView.textView.convert(shiftSize, from:nil)
         markdownTextView.textView.contentInset.bottom = shiftSize.size.height
         markdownTextView.textView.verticalScrollIndicatorInsets.bottom = shiftSize.size.height
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
         
     }
     
     /// Bring keyboard back to normal position.
-    @objc func keyboardWillHide(notification: NSNotification) {
-        os_log(.info, log: self.app, "View reset while keyboard retracts")
+    @objc func keyboardWillHide(notification: Notification) {
+        os_log(.info, log: app, "View reset while keyboard retracts")
         
         let contentInsets = UIEdgeInsets.zero
         markdownTextView.textView.contentInset = contentInsets
@@ -117,7 +145,7 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
     /// Info button will show the features of Markdown.
     @objc func infoButtonTapped() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         // Create the info items for the WhatsNewView.
         let items = [WhatsNew.Item(title: "Headers", subtitle: "Use '# ' to make a bold statement.", image: nil),
@@ -141,17 +169,17 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         
         let whatsNewVC = WhatsNewViewController(whatsNew: whatsNew, configuration: config)
         
-        self.present(whatsNewVC, animated: true, completion: nil)
+        present(whatsNewVC, animated: true, completion: nil)
         
     }
     
     /// Allow the swipe down gesture to push the keyboard away.
     @objc func handleGesture(gesture: UISwipeGestureRecognizer) -> Void {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         if gesture.direction == .down {
-            self.view.endEditing(true)
+            view.endEditing(true)
         }
     }
     
@@ -162,14 +190,14 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         
         // If the note is not filled with any content, discard it.
         if note.ID.isEmpty && (text.isEmpty || text == "# " || text == "#") {
-            os_log(.info, log: self.app, "No text in note, no need to save")
+            os_log(.info, log: app, "No text in note, no need to save")
             return
         }
         
         // Check if the note is the same as what it was before.
         // If so, we can save Firebase writes.
         if note.note == text {
-            os_log(.info, log: self.app, "No change in text")
+            os_log(.info, log: app, "No change in text")
             return
         }
         
@@ -179,7 +207,11 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
         // If the note is new, add it.
         if note.ID.isEmpty {
             
-            note.addData { (success, error) in
+            note.addData {[weak self] (success, error) in
+                guard let self = self else {
+                    return
+                }
+                
                 if let error = error {
                     self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
                     return
@@ -207,7 +239,7 @@ class EditNoteVC: UIViewController, UITextViewDelegate {
                     }
                     
                 }
-                os_log(.info, log: self.app, "Document deleted for note having any text successfully")
+                os_log(.info, log: app, "Document deleted for note having any text successfully")
                 return
             }
             

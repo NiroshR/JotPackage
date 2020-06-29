@@ -100,12 +100,12 @@ open class MarklightTextStorage: NSTextStorage, MarklightStyleApplier {
     */
     override open func processEditing() {
 
-        self.isBusyProcessing = true
-        defer { self.isBusyProcessing = false }
+        isBusyProcessing = true
+        defer { isBusyProcessing = false }
 
         let processingResult = marklightTextProcessor.processEditing(
             styleApplier: self,
-            string: self.string,
+            string: string,
             editedRange: editedRange)
 
         defer {
@@ -250,9 +250,9 @@ open class MarklightTextStorage: NSTextStorage, MarklightStyleApplier {
     }
 
     fileprivate func invalidateTextSizeForWholeRange() {
-        let wholeRange = NSMakeRange(0, (self.string as NSString).length)
-        self.invalidateAttributes(in: wholeRange)
-        for layoutManager in self.layoutManagers {
+        let wholeRange = NSMakeRange(0, (string as NSString).length)
+        invalidateAttributes(in: wholeRange)
+        for layoutManager in layoutManagers {
             layoutManager.invalidateDisplay(forCharacterRange: wholeRange)
         }
     }

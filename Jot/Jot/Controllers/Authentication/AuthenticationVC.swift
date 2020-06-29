@@ -58,10 +58,6 @@ class AuthenticationVC: UIViewController, UITextFieldDelegate {
         
         super.viewDidLoad()
         
-        // Allows a tap outside textfields to hide the keyboard.
-        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
-        view.addGestureRecognizer(tap)
-        
         if !firstRunCheck()  {
             setupRegisterView()
             splashScreen()
@@ -70,9 +66,7 @@ class AuthenticationVC: UIViewController, UITextFieldDelegate {
         }
         
         // Add notification so we know when the keyboard is showing or not.
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+        addObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,16 +88,52 @@ class AuthenticationVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func addObservers() {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) {
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
+            self.keyboardWillShow(notification: notification)
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) {
+            [weak self] notification in
+            
+            guard let self = self else {
+                return
+            }
+            
+            self.keyboardWillHide(notification: notification)
+        }
+        
+        // Allows a tap outside textfields to hide the keyboard.
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func removeObservers() {
+        for recognizer in view.gestureRecognizers ?? [] {
+            view.removeGestureRecognizer(recognizer)
+        }
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     /// Remove move view up when keyboard appears logic.
     deinit {
-        os_log(.info, log: self.app, "Keyboard observers deinitialized")
-        NotificationCenter.default.removeObserver(self)
+        // Log the operating function.
+        os_log(.info, log: app, "%@", #function)
+        
+        removeObservers()
     }
     
     // MARK: -Action Functions
     
     /// Move keyboard up when needed.
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: Notification) {
         os_log(.info, log: self.app, "View moved to accomodate keyboard")
         
         guard let userInfo = notification.userInfo else {return}
@@ -114,7 +144,7 @@ class AuthenticationVC: UIViewController, UITextFieldDelegate {
     }
     
     /// Bring keyboard back to normal position.
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: Notification) {
         os_log(.info, log: self.app, "View reset while keyboard retracts")
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
