@@ -16,21 +16,23 @@ class SettingsVC: UITableViewController {
     
     // MARK: -Class Variables
     
-    let app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
+    lazy var app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
     
-    let sections = ["General", "Reminders", "Account", ""]
+    lazy var sections = ["General", "Reminders", "Account", ""]
     
-    var generalList: [SettingsModel] = [SettingsModel(strings: ["Background Image", "crop"], endpoint: BackgroundImageVC())]
+    lazy var generalList: [SettingsModel] = [SettingsModel(strings: ["Background Image", "crop"], endpoint: BackgroundImageVC())]
     
-    var accountList: [SettingsModel] = [SettingsModel(strings: ["Update Email", "envelope"], endpoint: UpdateEmailVC()),
-                                       SettingsModel(strings: ["Update Password", "lock"], endpoint: UpdatePasswordVC())]
+    lazy var accountList: [SettingsModel] = [SettingsModel(strings: ["Update Email", "envelope"], endpoint: UpdateEmailVC()),
+                                             SettingsModel(strings: ["Update Password", "lock"], endpoint: UpdatePasswordVC())]
     
-    var remindersList: [SettingsModel] = [SettingsModel(strings: ["Hide Completed", "checkmark.circle"], endpoint: nil)]
+    lazy var remindersList: [SettingsModel] = [SettingsModel(strings: ["Hide Completed", "checkmark.circle"], endpoint: nil)]
     
-    var accountOutList: [SettingsModel] = [SettingsModel(strings: ["Sign Out", "person", ""], endpoint: nil),
-                                          SettingsModel(strings: ["Delete Account", "trash", ""], endpoint: nil)]
+    lazy var accountOutList: [SettingsModel] = [SettingsModel(strings: ["Sign Out", "person", ""], endpoint: nil),
+                                                SettingsModel(strings: ["Delete Account", "trash", ""], endpoint: nil)]
     
-    let hud: JGProgressHUD = {
+    static var handle: AuthStateDidChangeListenerHandle!
+    
+    lazy var hud: JGProgressHUD = {
         let hud = JGProgressHUD(style: .light)
         hud.interactionType = .blockAllTouches
         return hud
@@ -40,14 +42,14 @@ class SettingsVC: UITableViewController {
     
     override func viewDidLoad() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         super.viewDidLoad()
         
         // Set navigation bar.
-        self.title = "Settings"
-        self.view.backgroundColor = .secondarySystemBackground
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Settings"
+        view.backgroundColor = .secondarySystemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         
         setupTableView()
@@ -55,14 +57,18 @@ class SettingsVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
         
         // If a user is logged out or deleted, the view will be dismissed.
-        Auth.auth().addStateDidChangeListener { auth, user in
+        SettingsVC.handle = Auth.auth().addStateDidChangeListener {[weak self] auth, user in
             if user == nil {
+                guard let self = self else {
+                    return
+                }
+                
                 self.hud.dismiss(animated: true)
                 
                 // Need a reference to the current presenting view controller and then present the LoginVC.
@@ -77,6 +83,14 @@ class SettingsVC: UITableViewController {
                 })
             }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        Auth.auth().removeStateDidChangeListener(SettingsVC.handle)
+    }
+    
+    deinit {
+        os_log(.info, log: app, "%@", #function)
     }
     
     // MARK: -Tableview Sections
@@ -99,12 +113,12 @@ class SettingsVC: UITableViewController {
     
     /// Number of section to make.
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        return sections.count
     }
     
     /// Title for sections.
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.sections[section]
+        return sections[section]
     }
     
     /// Set the section title font and background to match the rest of the view.
@@ -129,23 +143,24 @@ class SettingsVC: UITableViewController {
             cell.textLabel?.text = generalList[indexPath.row].strings[0]
             cell.accessoryType = .disclosureIndicator
             
-            cell.imageView?.image = UIImage(systemName: generalList[indexPath.row].strings[1])
+//            cell.imageView?.image = UIImage(systemName: generalList[indexPath.row].strings[1])
         case 1:
             cell.textLabel?.text = remindersList[indexPath.row].strings[0]
-            cell.imageView?.image = UIImage(systemName: remindersList[indexPath.row].strings[1])
+//            cell.imageView?.image = UIImage(systemName: remindersList[indexPath.row].strings[1])
             
             // Add switch to the cell to toggle the completed setting.
             let switchView = UISwitch(frame: .zero)
             switchView.setOn(hideCompletedRemindersCheck(), animated: true)
             switchView.tag = indexPath.row // for detect which row switch Changed
-            switchView.addTarget(self, action: #selector(self.showCompletedRemindersSwitch(_:)), for: .valueChanged)
+            weak var tmpSelf = self
+            switchView.addTarget(tmpSelf, action: #selector(showCompletedRemindersSwitch(_:)), for: .valueChanged)
             cell.accessoryView = switchView
         case 2:
             // For more cell details: https://developer.apple.com/documentation/uikit/uitableviewcell
             cell.textLabel?.text = accountList[indexPath.row].strings[0]
             cell.accessoryType = .disclosureIndicator
             
-            cell.imageView?.image = UIImage(systemName: accountList[indexPath.row].strings[1])
+//            cell.imageView?.image = UIImage(systemName: accountList[indexPath.row].strings[1])
         case 3:
             // For more cell details: https://developer.apple.com/documentation/uikit/uitableviewcell
             cell.textLabel?.text = accountOutList[indexPath.row].strings[0]
@@ -164,7 +179,7 @@ class SettingsVC: UITableViewController {
     /// When you select table cell, takes you to appropriate VC.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         // Need to deselect the cell after the tap has ended.
         let generator = UIImpactFeedbackGenerator(style: .soft)
@@ -176,20 +191,20 @@ class SettingsVC: UITableViewController {
         case 0:
             // Grab the endpoint to go to.
             guard let newVc = generalList[indexPath.row].endpoint else {
-                os_log(.info, log: self.app, "No endpoint from general list, index: %d", indexPath.row)
+                os_log(.info, log: app, "No endpoint from general list, index: %d", indexPath.row)
                 return
             }
-            let navigationVC = self.navigationController
+            let navigationVC = navigationController
             navigationVC!.pushViewController(newVc, animated: true)
         case 1:
             return
         case 2:
             // Grab the endpoint to go to.
             guard let newVc = accountList[indexPath.row].endpoint else {
-                os_log(.info, log: self.app, "No endpoint from account list, index: %d", indexPath.row)
+                os_log(.info, log: app, "No endpoint from account list, index: %d", indexPath.row)
                 return
             }
-            let navigationVC = self.navigationController
+            let navigationVC = navigationController
             navigationVC!.pushViewController(newVc, animated: true)
         case 3:
             // If we select the Logout row we execute a different set of logic.
@@ -213,7 +228,7 @@ class SettingsVC: UITableViewController {
     
     /// Close the Settings VC.
     @objc func closeView() {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
     
     /// Load the reminders switch.

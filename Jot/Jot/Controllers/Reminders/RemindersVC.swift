@@ -17,13 +17,13 @@ class RemindersVC: UITableViewController, RemindersCellDelegate {
     
     let app = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "\(URL(fileURLWithPath: #file).deletingPathExtension().lastPathComponent)")
     
-    let button = BlueButton(type: .custom)
+    lazy var button = BlueButton(type: .custom)
     
     var reminders: Reminders!
     
-    let searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController = UISearchController(searchResultsController: nil)
     
-    var filteredReminders: [Reminder] = []
+    lazy var filteredReminders: [Reminder] = []
     
     // MARK: -Class Override Functions
     
@@ -39,6 +39,13 @@ class RemindersVC: UITableViewController, RemindersCellDelegate {
         
         // Setup the table view and the floating button to the view.
         setupView()
+        setupNavBar()
+        
+        // Load the data from Firebase and this also contains the listeners
+        // for reminders to auto-update the table when a reminder is edited.
+        reminders.loadData {
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,14 +54,6 @@ class RemindersVC: UITableViewController, RemindersCellDelegate {
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
-        
-        setupNavBar()
-        
-        // Load the data from Firebase and this also contains the listeners
-        // for reminders to auto-update the table when a reminder is edited.
-        reminders.loadData {
-            self.tableView.reloadData()
-        }
     }
     
     // MARK: -Tableview Sections

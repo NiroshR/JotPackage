@@ -148,12 +148,7 @@ public class Reminder {
         let dbRef = db.collection(userID).document(userID).collection("reminders")
         
         // Save the document to the user's collection and send the possible error through the completion handler.
-        dbRef.document(ID).updateData(dictionaryForUpdate) {[weak self] err in
-            // Need weak self to prevent memory leaks.
-            guard let self = self else {
-                return completion(false, err)
-            }
-            
+        dbRef.document(ID).updateData(dictionaryForUpdate) {err in
             if let err = err {
                 return completion(false, err)
             }

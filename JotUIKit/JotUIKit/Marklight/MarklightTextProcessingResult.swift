@@ -36,7 +36,7 @@ public struct MarklightProcessingResult {
 extension NSLayoutManager {
     func processEditing(for textStorage: NSTextStorage, processingResult: MarklightProcessingResult) {
 
-        self.processEditing(
+        processEditing(
             for: textStorage,
             edited: .editedAttributes,
             range: processingResult.editedRange,

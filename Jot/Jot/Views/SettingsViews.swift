@@ -14,9 +14,8 @@ extension SettingsVC {
     
     /// Register the default cell for requeue and group the rows to not see extra rows.
     func setupTableView() {
-        
         // Group the table view by section. This gets rid of blank horizontal lines where a cell would be.
-        self.tableView = UITableView(frame: self.tableView.frame, style: .grouped)
+        tableView = UITableView(frame: tableView.frame, style: .grouped)
         
         //Registers a class for use in creating new table cells.
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCellID")
@@ -27,12 +26,19 @@ extension SettingsVC {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         // Delete action will sign out the user.
-        let deleteAction = UIAlertAction(title: "Sign Out", style: .destructive, handler: { (alert: UIAlertAction!) -> Void in
+        let deleteAction = UIAlertAction(title: "Sign Out", style: .destructive, handler: {[weak self] (alert: UIAlertAction!) -> Void in
+            guard let self = self else {
+                return
+            }
             
             self.hud.textLabel.text = "Signing out..."
             self.hud.show(in: self.view, animated: true)
             
-            Authentication.logout { (error) in
+            Authentication.logout {[weak self] (error) in
+                guard let self = self else {
+                    return
+                }
+                
                 if let error = error {
                     self.hud.dismiss(animated: true)
                     self.logAndDisplayAlert(app: self.app, log: error.localizedDescription, displayAlert: error.localizedDescription)
@@ -51,13 +57,13 @@ extension SettingsVC {
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
         
     }
     
     func deleteAccount() {
         // Log the operating function.
-        os_log(.info, log: self.app, "%@", #function)
+        os_log(.info, log: app, "%@", #function)
         
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
@@ -92,7 +98,10 @@ extension SettingsVC {
             }
             
             // Once the submit button is pressed, the password and email fields are processed.
-            let submitAction = UIAlertAction(title: "Delete", style: .destructive) { [unowned ac] _ in
+            let submitAction = UIAlertAction(title: "Delete", style: .destructive) { [unowned ac, weak self] _ in
+                guard let self = self else {
+                    return
+                }
                 
                 guard let email = ac.textFields?[0].text else {
                     os_log(.info, log: self.app, "No email present.")
@@ -141,7 +150,7 @@ extension SettingsVC {
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
 }
