@@ -11,6 +11,9 @@
 		240C11F724A6B5E300298A41 /* Background1.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11F624A6B5E300298A41 /* Background1.png */; };
 		240C11F924A6B62800298A41 /* Background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11F824A6B62800298A41 /* Background2.png */; };
 		240C11FB24A6B63000298A41 /* Background3.png in Resources */ = {isa = PBXBuildFile; fileRef = 240C11FA24A6B63000298A41 /* Background3.png */; };
+		2428676224ACF82B00E48E20 /* SiriInfo.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */; };
+		2428676324ACF82D00E48E20 /* SiriInfo.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */; };
+		2428676524ACFE4D00E48E20 /* ReminderIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2428676424ACFE4D00E48E20 /* ReminderIntentHandler.swift */; };
 		242A323424A2E6D300DA7F34 /* JotUIKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 242A323024A2E6A400DA7F34 /* JotUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		242A323524A2E6E000DA7F34 /* JotModelKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 242A322724A2E69100DA7F34 /* JotModelKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		242A323D24A2E91F00DA7F34 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A323C24A2E91F00DA7F34 /* TabBarVC.swift */; };
@@ -171,6 +174,7 @@
 		240C11F624A6B5E300298A41 /* Background1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background1.png; path = ../../../../Jot/Jot/Assets.xcassets/Background1.imageset/Background1.png; sourceTree = "<group>"; };
 		240C11F824A6B62800298A41 /* Background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background2.png; path = ../../../../Jot/Jot/Assets.xcassets/Background2.imageset/Background2.png; sourceTree = "<group>"; };
 		240C11FA24A6B63000298A41 /* Background3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background3.png; path = ../../../../Jot/Jot/Assets.xcassets/Background3.imageset/Background3.png; sourceTree = "<group>"; };
+		2428676424ACFE4D00E48E20 /* ReminderIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderIntentHandler.swift; sourceTree = "<group>"; };
 		242A322124A2E69100DA7F34 /* JotModelKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JotModelKit.xcodeproj; path = ../JotModelKit/JotModelKit.xcodeproj; sourceTree = "<group>"; };
 		242A322A24A2E6A400DA7F34 /* JotUIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JotUIKit.xcodeproj; path = ../JotUIKit/JotUIKit.xcodeproj; sourceTree = "<group>"; };
 		242A323C24A2E91F00DA7F34 /* TabBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
@@ -437,6 +441,7 @@
 				245306E924ABE82D0000DDCC /* IntentHandler.swift */,
 				245306EB24ABE82D0000DDCC /* Info.plist */,
 				2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */,
+				2428676424ACFE4D00E48E20 /* ReminderIntentHandler.swift */,
 			);
 			path = JotSiri;
 			sourceTree = "<group>";
@@ -1000,6 +1005,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				245306EA24ABE82D0000DDCC /* IntentHandler.swift in Sources */,
+				2428676224ACF82B00E48E20 /* SiriInfo.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1014,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				245306F524ABE82D0000DDCC /* IntentViewController.swift in Sources */,
+				2428676324ACF82D00E48E20 /* SiriInfo.intentdefinition in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1039,6 +1046,7 @@
 				242A324C24A2E95000DA7F34 /* EditNoteVC.swift in Sources */,
 				242A325D24A2EB4600DA7F34 /* SettingsViews.swift in Sources */,
 				2453070C24ABEC720000DDCC /* SiriInfo.intentdefinition in Sources */,
+				2428676524ACFE4D00E48E20 /* ReminderIntentHandler.swift in Sources */,
 				2473CA1824A39F6D00F7E2B4 /* Note.swift in Sources */,
 				242A325E24A2EB4600DA7F34 /* NoteViews.swift in Sources */,
 				242A324324A2E93100DA7F34 /* SettingsVC.swift in Sources */,
