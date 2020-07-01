@@ -2,33 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>myapp</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>$(APP_BUNDLE_ID)</string>
-		</dict>
-	</array>
-	<key>FIREBASE_API_KEY</key>
-	<string>$(FIREBASE_API_KEY)</string>
-	<key>FIREBASE_CLIENT_ID</key>
-	<string>$(FIREBASE_CLIENT_ID)</string>
-	<key>FIREBASE_GCM_SENDER_ID</key>
-	<string>$(FIREBASE_GCM_SENDER_ID)</string>
-	<key>FIREBASE_PROJECT_ID</key>
-	<string>$(FIREBASE_PROJECT_ID)</string>
-	<key>FIREBASE_GOOGLE_APP_ID</key>
-	<string>$(FIREBASE_GOOGLE_APP_ID)</string>
-	<key>FIREBASE_DATABASE_URL</key>
-	<string>$(FIREBASE_DATABASE_URL)</string>
-	<key>FirebaseScreenReportingEnabled</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -43,10 +16,41 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(BUNDLE_STRING)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>myapp</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>$(APP_BUNDLE_ID)</string>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(BUNDLE_BUILD)</string>
+	<key>FIREBASE_API_KEY</key>
+	<string>$(FIREBASE_API_KEY)</string>
+	<key>FIREBASE_CLIENT_ID</key>
+	<string>$(FIREBASE_CLIENT_ID)</string>
+	<key>FIREBASE_DATABASE_URL</key>
+	<string>$(FIREBASE_DATABASE_URL)</string>
+	<key>FIREBASE_GCM_SENDER_ID</key>
+	<string>$(FIREBASE_GCM_SENDER_ID)</string>
+	<key>FIREBASE_GOOGLE_APP_ID</key>
+	<string>$(FIREBASE_GOOGLE_APP_ID)</string>
+	<key>FIREBASE_PROJECT_ID</key>
+	<string>$(FIREBASE_PROJECT_ID)</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>ReminderIntent</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

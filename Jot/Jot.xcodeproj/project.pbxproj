@@ -33,6 +33,13 @@
 		242A326324A2EB4600DA7F34 /* EditReminderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A325924A2EB4600DA7F34 /* EditReminderViews.swift */; };
 		242A326424A2EB4600DA7F34 /* EditNoteViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A325A24A2EB4600DA7F34 /* EditNoteViews.swift */; };
 		242E913E24A2B6C70037B723 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 242E913D24A2B6C70037B723 /* GoogleService-Info.plist */; };
+		245306EA24ABE82D0000DDCC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245306E924ABE82D0000DDCC /* IntentHandler.swift */; };
+		245306F224ABE82D0000DDCC /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 245306F124ABE82D0000DDCC /* IntentsUI.framework */; };
+		245306F524ABE82D0000DDCC /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245306F424ABE82D0000DDCC /* IntentViewController.swift */; };
+		245306F824ABE82D0000DDCC /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 245306F624ABE82D0000DDCC /* MainInterface.storyboard */; };
+		245306FC24ABE82D0000DDCC /* JotSiriUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 245306F024ABE82D0000DDCC /* JotSiriUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		245306FF24ABE82D0000DDCC /* JotSiri.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 245306E724ABE82D0000DDCC /* JotSiri.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2453070C24ABEC720000DDCC /* SiriInfo.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */; };
 		2459222224A3BF58006AB4E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24A7458024A256C7002BAC8F /* Assets.xcassets */; };
 		2459222424A3BFAD006AB4E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2459222324A3BFAD006AB4E0 /* GoogleService-Info.plist */; };
 		2473C9E624A3999500F7E2B4 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2473C9E524A3999500F7E2B4 /* Reminder.swift */; };
@@ -93,6 +100,20 @@
 			remoteGlobalIDString = 240ECD3324A293AA00E32E2A;
 			remoteInfo = JotUIKitTests;
 		};
+		245306FA24ABE82D0000DDCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24A7456F24A256C5002BAC8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 245306EF24ABE82D0000DDCC;
+			remoteInfo = JotSiriUI;
+		};
+		245306FD24ABE82D0000DDCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24A7456F24A256C5002BAC8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 245306E624ABE82D0000DDCC;
+			remoteInfo = JotSiri;
+		};
 		24A7458E24A256C7002BAC8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 24A7456F24A256C5002BAC8F /* Project object */;
@@ -136,6 +157,8 @@
 			dstSubfolderSpec = 13;
 			files = (
 				24D8165424A3B8BA00CBB1C1 /* Jot Widget.appex in Embed App Extensions */,
+				245306FF24ABE82D0000DDCC /* JotSiri.appex in Embed App Extensions */,
+				245306FC24ABE82D0000DDCC /* JotSiriUI.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +193,15 @@
 		242A325924A2EB4600DA7F34 /* EditReminderViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReminderViews.swift; sourceTree = "<group>"; };
 		242A325A24A2EB4600DA7F34 /* EditNoteViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditNoteViews.swift; sourceTree = "<group>"; };
 		242E913D24A2B6C70037B723 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		245306E724ABE82D0000DDCC /* JotSiri.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JotSiri.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		245306E924ABE82D0000DDCC /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		245306EB24ABE82D0000DDCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		245306F024ABE82D0000DDCC /* JotSiriUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JotSiriUI.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		245306F124ABE82D0000DDCC /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		245306F424ABE82D0000DDCC /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		245306F724ABE82D0000DDCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		245306F924ABE82D0000DDCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = SiriInfo.intentdefinition; sourceTree = "<group>"; };
 		2459222324A3BFAD006AB4E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2459222524A3BFEB006AB4E0 /* Jot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Jot.entitlements; sourceTree = "<group>"; };
 		2459222624A3C020006AB4E0 /* JotWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JotWidget.entitlements; sourceTree = "<group>"; };
@@ -219,6 +251,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		245306E424ABE82D0000DDCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		245306ED24ABE82D0000DDCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				245306F224ABE82D0000DDCC /* IntentsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		24A7457424A256C5002BAC8F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +316,7 @@
 				EF49F72152B00EA79D359665 /* Pods_Jot_JotUITests.framework */,
 				239C7F74F8981878B43A8CA5 /* Pods_JotTests.framework */,
 				E4B40058990857827230EB6B /* Pods_JotWidget.framework */,
+				245306F124ABE82D0000DDCC /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -383,6 +431,36 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		245306E824ABE82D0000DDCC /* JotSiri */ = {
+			isa = PBXGroup;
+			children = (
+				245306E924ABE82D0000DDCC /* IntentHandler.swift */,
+				245306EB24ABE82D0000DDCC /* Info.plist */,
+				2453070B24ABEC720000DDCC /* SiriInfo.intentdefinition */,
+			);
+			path = JotSiri;
+			sourceTree = "<group>";
+		};
+		245306F324ABE82D0000DDCC /* JotSiriUI */ = {
+			isa = PBXGroup;
+			children = (
+				245306F424ABE82D0000DDCC /* IntentViewController.swift */,
+				245306F624ABE82D0000DDCC /* MainInterface.storyboard */,
+				245306F924ABE82D0000DDCC /* Info.plist */,
+			);
+			path = JotSiriUI;
+			sourceTree = "<group>";
+		};
+		2453070A24ABE8BD0000DDCC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				24D8164B24A3B8BA00CBB1C1 /* JotWidget */,
+				245306E824ABE82D0000DDCC /* JotSiri */,
+				245306F324ABE82D0000DDCC /* JotSiriUI */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		2473C9E024A3995900F7E2B4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -414,7 +492,7 @@
 				24A7457924A256C5002BAC8F /* Jot */,
 				24A7459024A256C7002BAC8F /* JotTests */,
 				24A7459B24A256C7002BAC8F /* JotUITests */,
-				24D8164B24A3B8BA00CBB1C1 /* JotWidget */,
+				2453070A24ABE8BD0000DDCC /* Extensions */,
 				24A7457824A256C5002BAC8F /* Products */,
 				1421E1B8FD913753EED8CE65 /* Frameworks */,
 				CA2E5AA81E5A8F1FFFFD3F20 /* Pods */,
@@ -428,6 +506,8 @@
 				24A7458D24A256C7002BAC8F /* JotTests.xctest */,
 				24A7459824A256C7002BAC8F /* JotUITests.xctest */,
 				24D8164824A3B8BA00CBB1C1 /* Jot Widget.appex */,
+				245306E724ABE82D0000DDCC /* JotSiri.appex */,
+				245306F024ABE82D0000DDCC /* JotSiriUI.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -518,6 +598,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		245306E624ABE82D0000DDCC /* JotSiri */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2453070924ABE82D0000DDCC /* Build configuration list for PBXNativeTarget "JotSiri" */;
+			buildPhases = (
+				245306E324ABE82D0000DDCC /* Sources */,
+				245306E424ABE82D0000DDCC /* Frameworks */,
+				245306E524ABE82D0000DDCC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JotSiri;
+			productName = JotSiri;
+			productReference = 245306E724ABE82D0000DDCC /* JotSiri.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		245306EF24ABE82D0000DDCC /* JotSiriUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2453070824ABE82D0000DDCC /* Build configuration list for PBXNativeTarget "JotSiriUI" */;
+			buildPhases = (
+				245306EC24ABE82D0000DDCC /* Sources */,
+				245306ED24ABE82D0000DDCC /* Frameworks */,
+				245306EE24ABE82D0000DDCC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JotSiriUI;
+			productName = JotSiriUI;
+			productReference = 245306F024ABE82D0000DDCC /* JotSiriUI.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		24A7457624A256C5002BAC8F /* Jot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 24A745A124A256C7002BAC8F /* Build configuration list for PBXNativeTarget "Jot" */;
@@ -534,6 +648,8 @@
 			);
 			dependencies = (
 				24D8165324A3B8BA00CBB1C1 /* PBXTargetDependency */,
+				245306FB24ABE82D0000DDCC /* PBXTargetDependency */,
+				245306FE24ABE82D0000DDCC /* PBXTargetDependency */,
 			);
 			name = Jot;
 			productName = Jot;
@@ -607,6 +723,12 @@
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Nirosh Ratnarajah";
 				TargetAttributes = {
+					245306E624ABE82D0000DDCC = {
+						CreatedOnToolsVersion = 11.5;
+					};
+					245306EF24ABE82D0000DDCC = {
+						CreatedOnToolsVersion = 11.5;
+					};
 					24A7457624A256C5002BAC8F = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -650,6 +772,8 @@
 				24A7458C24A256C7002BAC8F /* JotTests */,
 				24A7459724A256C7002BAC8F /* JotUITests */,
 				24D8164724A3B8BA00CBB1C1 /* JotWidget */,
+				245306E624ABE82D0000DDCC /* JotSiri */,
+				245306EF24ABE82D0000DDCC /* JotSiriUI */,
 			);
 		};
 /* End PBXProject section */
@@ -686,6 +810,21 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		245306E524ABE82D0000DDCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		245306EE24ABE82D0000DDCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				245306F824ABE82D0000DDCC /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		24A7457524A256C5002BAC8F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -856,6 +995,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		245306E324ABE82D0000DDCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				245306EA24ABE82D0000DDCC /* IntentHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		245306EC24ABE82D0000DDCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				245306F524ABE82D0000DDCC /* IntentViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		24A7457324A256C5002BAC8F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -883,6 +1038,7 @@
 				242A324824A2E94000DA7F34 /* RemindersVC.swift in Sources */,
 				242A324C24A2E95000DA7F34 /* EditNoteVC.swift in Sources */,
 				242A325D24A2EB4600DA7F34 /* SettingsViews.swift in Sources */,
+				2453070C24ABEC720000DDCC /* SiriInfo.intentdefinition in Sources */,
 				2473CA1824A39F6D00F7E2B4 /* Note.swift in Sources */,
 				242A325E24A2EB4600DA7F34 /* NoteViews.swift in Sources */,
 				242A324324A2E93100DA7F34 /* SettingsVC.swift in Sources */,
@@ -918,6 +1074,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		245306FB24ABE82D0000DDCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 245306EF24ABE82D0000DDCC /* JotSiriUI */;
+			targetProxy = 245306FA24ABE82D0000DDCC /* PBXContainerItemProxy */;
+		};
+		245306FE24ABE82D0000DDCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 245306E624ABE82D0000DDCC /* JotSiri */;
+			targetProxy = 245306FD24ABE82D0000DDCC /* PBXContainerItemProxy */;
+		};
 		24A7458F24A256C7002BAC8F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 24A7457624A256C5002BAC8F /* Jot */;
@@ -936,6 +1102,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		245306F624ABE82D0000DDCC /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				245306F724ABE82D0000DDCC /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		24A7458524A256C7002BAC8F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -947,6 +1121,82 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2453070024ABE82D0000DDCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PG86Z6P52U;
+				INFOPLIST_FILE = Extensions/JotSiri/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ratnarajah.Jot.debug.JotSiri;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2453070124ABE82D0000DDCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PG86Z6P52U;
+				INFOPLIST_FILE = Extensions/JotSiri/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ratnarajah.Jot.debug.JotSiri;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2453070224ABE82D0000DDCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PG86Z6P52U;
+				INFOPLIST_FILE = Extensions/JotSiriUI/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ratnarajah.Jot.debug.JotSiriUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2453070324ABE82D0000DDCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PG86Z6P52U;
+				INFOPLIST_FILE = Extensions/JotSiriUI/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.ratnarajah.Jot.debug.JotSiriUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		24A7459F24A256C7002BAC8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24753A3524A2B32000E901F5 /* Debug.xcconfig */;
@@ -1204,7 +1454,7 @@
 				CODE_SIGN_ENTITLEMENTS = JotWidget/JotWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PG86Z6P52U;
-				INFOPLIST_FILE = JotWidget/Info.plist;
+				INFOPLIST_FILE = Extensions/JotWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1225,7 +1475,7 @@
 				CODE_SIGN_ENTITLEMENTS = JotWidget/JotWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PG86Z6P52U;
-				INFOPLIST_FILE = JotWidget/Info.plist;
+				INFOPLIST_FILE = Extensions/JotWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1242,6 +1492,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2453070824ABE82D0000DDCC /* Build configuration list for PBXNativeTarget "JotSiriUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2453070224ABE82D0000DDCC /* Debug */,
+				2453070324ABE82D0000DDCC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2453070924ABE82D0000DDCC /* Build configuration list for PBXNativeTarget "JotSiri" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2453070024ABE82D0000DDCC /* Debug */,
+				2453070124ABE82D0000DDCC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		24A7457224A256C5002BAC8F /* Build configuration list for PBXProject "Jot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

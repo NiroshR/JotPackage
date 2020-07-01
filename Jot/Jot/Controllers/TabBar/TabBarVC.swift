@@ -104,7 +104,7 @@ class TabBarVC: UITabBarController {
         
         // Set the color of the navigation bar to mostly transparent and get
         // rid of border with the shadowImage.
-        self.tabBar.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.4)
+        self.tabBar.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         self.tabBar.backgroundImage = UIImage()
         self.tabBar.shadowImage = UIImage()
         
