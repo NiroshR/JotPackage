@@ -27,7 +27,7 @@ class IntentHandler: INExtension, INSendMessageIntentHandling, INSearchForMessag
             fatalError("Unhandled Intent error : \(intent)")
         }
         
-        return self
+        return ReminderIntentHandler()
     }
     
     // MARK: - INSendMessageIntentHandling

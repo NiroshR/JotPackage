@@ -11,19 +11,27 @@ import Intents
 
 class ReminderIntentHandler: NSObject, ReminderIntentHandling {
     func handle(intent: ReminderIntent, completion: @escaping (ReminderIntentResponse) -> Void) {
-        <#code#>
+        print(intent.title)
+        print(intent.note)
+        print(intent.dueDate)
+        
+        completion(ReminderIntentResponse.success(result: "Successfully"))
     }
     
     func resolveTitle(for intent: ReminderIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
-        <#code#>
+        if intent.title == "title" {
+            completion(INStringResolutionResult.needsValue())
+        }else{
+            completion(INStringResolutionResult.success(with: intent.title ?? ""))
+        }
     }
     
     func resolveNote(for intent: ReminderIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
-        <#code#>
+        completion(INStringResolutionResult.success(with: intent.note ?? ""))
     }
     
     func resolveDueDate(for intent: ReminderIntent, with completion: @escaping (INDateComponentsResolutionResult) -> Void) {
-        <#code#>
+        completion(INDateComponentsResolutionResult.success(with: intent.dueDate ?? DateComponents()))
     }
     
     

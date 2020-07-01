@@ -18,9 +18,11 @@
 	<array>
 		<dict>
 			<key>INIntentCategory</key>
-			<string>create</string>
+			<string>generic</string>
 			<key>INIntentConfigurable</key>
 			<true/>
+			<key>INIntentDescription</key>
+			<string>Add a reminder with Jot</string>
 			<key>INIntentDescriptionID</key>
 			<string>k5J4Ia</string>
 			<key>INIntentLastParameterTag</key>
@@ -259,7 +261,7 @@
 			<key>INIntentType</key>
 			<string>Custom</string>
 			<key>INIntentVerb</key>
-			<string>Add</string>
+			<string>Do</string>
 		</dict>
 	</array>
 	<key>INTypes</key>
