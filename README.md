@@ -11,10 +11,10 @@ born.
 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="1604" alt="Permission Alert" src="Documentation/Permission Alert.png"> |  <img width="1604" alt="Splash Screen" src="Documentation/Splash Screen.png">|<img width="1604" alt="Create Account" src="Documentation/Create Account.png">|
-|<img width="1604" alt="Login" src="Documentation/Login.png">  |  <img width="1604" alt="Reminders" src="Documentation/Reminders.png">|<img width="1604" alt="Edit Reminder" src="Documentation/Edit Reminder.png">|
-|<img width="1604" alt="Notes" src="Documentation/Notes.png">  |  <img width="1604" alt="Notes Info" src="Documentation/Notes Info.png">|<img width="1604" alt="Edit Note" src="Documentation/Edit Note.png">|
-|<img width="1604" alt="Settings" src="Documentation/Settings.png">  |  <img width="1604" alt="Widget" src="Documentation/Widget.png">|<img width="180" alt="Logo" src="Jot/Jot/Assets.xcassets/AppIcon.appiconset/180.png">|
+|<img width="1604" alt="Permission Alert" src="Documentation/Permission Alert.png"> Permission Alert |  <img width="1604" alt="Splash Screen" src="Documentation/Splash Screen.png"> Splash Screen |<img width="1604" alt="Create Account" src="Documentation/Create Account.png"> Create Account |
+|<img width="1604" alt="Login" src="Documentation/Login.png"> Login |  <img width="1604" alt="Reminders" src="Documentation/Reminders.png"> Reminders |<img width="1604" alt="Edit Reminder" src="Documentation/Edit Reminder.png"> Edit Reminder |
+|<img width="1604" alt="Notes" src="Documentation/Notes.png"> Notes |  <img width="1604" alt="Notes Info" src="Documentation/Notes Info.png"> Notes Info |<img width="1604" alt="Edit Note" src="Documentation/Edit Note.png"> Edit Note |
+|<img width="1604" alt="Settings" src="Documentation/Settings.png"> Settings |  <img width="1604" alt="Widget" src="Documentation/Widget.png"> Widget |<img width="180" alt="Logo" src="Jot/Jot/Assets.xcassets/AppIcon.appiconset/180.png">|
 
 ## Features
 
