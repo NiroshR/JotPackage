@@ -46,3 +46,7 @@ pod install
 ```
 
 For more info on project setup visit the [Wiki](https://github.com/NiroshR/JotPackage/wiki/Project-Setup).
+
+## Author
+Nirosh Ratnarajah. Literally just me... and StackOverflow.
+
