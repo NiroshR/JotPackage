@@ -45,4 +45,4 @@ pod init
 pod install
 ```
 
-For more info on project setup visit the Wiki.
+For more info on project setup visit the [Wiki](https://github.com/NiroshR/JotPackage/wiki/Project-Setup).
